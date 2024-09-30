@@ -156,27 +156,14 @@ def payment(request):
     return render(request, "payment.html")
 
 
-from django.contrib.auth.models import AnonymousUser
-
 def like_recipe(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    
-    # Yoxlayırıq ki, istifadəçi login olub ya yox
-    if isinstance(request.user, AnonymousUser):
-        # Anonim istifadəçi üçün sessiya vasitəsilə bəyənişi idarə edək
-        if not request.session.get(f'liked_{recipe_id}', False):
-            # İlk dəfə bəyəndikdə sessiyada işarələyirik
-            request.session[f'liked_{recipe_id}'] = True
-            recipe.views_count += 1  # Və ya bəyənişi başqa üsulla idarə edə bilərsiniz
-            recipe.save()
+    if request.user in recipe.likes.all():
+        recipe.likes.remove(request.user)
     else:
-        # Login olmuş istifadəçilər üçün bəyənişi idarə edirik
-        if request.user in recipe.likes.all():
-            recipe.likes.remove(request.user)
-        else:
-            recipe.likes.add(request.user)
-
+        recipe.likes.add(request.user)
     return redirect("recipe_detail", recipe_id=recipe.id)
+
 
 
 
@@ -187,13 +174,10 @@ def add_comment(request, recipe_id):
     if request.method == "POST":
         comment_text = request.POST.get("comment")
         if comment_text:
-            # Login olmamış istifadəçilər üçün user None olacaq
-            user = request.user if request.user.is_authenticated else None
-
             Comment.objects.create(
                 recipe=recipe,
-                user=user,  # User boş qala bilər
-                text=comment_text
+                user=request.user, 
+                text=comment_text  
             )
             return redirect("recipe_detail", recipe_id=recipe_id)
 
@@ -203,19 +187,15 @@ def add_comment(request, recipe_id):
 
 
 
-
-
 def add_rating(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
 
     if request.method == "POST":
-        score = request.POST.get("rating")
+        score = request.POST.get("rating")  
         if score:
-            user = request.user if request.user.is_authenticated else None
-
-            Rating.objects.update_or_create(
+            rating, created = Rating.objects.update_or_create(
                 recipe=recipe,
-                user=user,  # User boş qala bilər
+                user=request.user,
                 defaults={"rating": score}
             )
 
@@ -223,7 +203,6 @@ def add_rating(request, recipe_id):
             return JsonResponse({'new_average_rating': new_average_rating})
 
     return redirect('recipe_detail', recipe_id=recipe.id)
-
 
 
 
