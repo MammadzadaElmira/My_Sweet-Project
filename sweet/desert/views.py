@@ -158,12 +158,17 @@ def payment(request):
 
 def like_recipe(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-    if request.user in recipe.likes.all():
-        recipe.likes.remove(request.user)
-    else:
-        recipe.likes.add(request.user)
-    return redirect("recipe_detail", recipe_id=recipe.id)
 
+    
+    user = request.user if request.user.is_authenticated else None
+
+   
+    if user and user in recipe.likes.all():
+        recipe.likes.remove(user)
+    else:
+        recipe.likes.add(user)
+
+    return redirect("recipe_detail", recipe_id=recipe.id)
 
 
 
@@ -173,10 +178,13 @@ def add_comment(request, recipe_id):
     if request.method == "POST":
         comment_text = request.POST.get("comment")
         if comment_text:
+            # İstifadəçi login olmayıbsa, anonim olaraq əlavə edin
+            user = request.user if request.user.is_authenticated else None
+
             Comment.objects.create(
                 recipe=recipe,
-                user=request.user, 
-                text=comment_text  
+                user=user,  # Əgər user None-dursa, anonim olacaq
+                text=comment_text
             )
             return redirect("recipe_detail", recipe_id=recipe_id)
 
@@ -185,15 +193,19 @@ def add_comment(request, recipe_id):
 
 
 
+
+
 def add_rating(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
 
     if request.method == "POST":
-        score = request.POST.get("rating")  
+        score = request.POST.get("rating")
         if score:
-            rating, created = Rating.objects.update_or_create(
+            user = request.user if request.user.is_authenticated else None
+
+            Rating.objects.update_or_create(
                 recipe=recipe,
-                user=request.user,
+                user=user,  # Login olmayanlar üçün user None olacaq
                 defaults={"rating": score}
             )
 
@@ -201,6 +213,7 @@ def add_rating(request, recipe_id):
             return JsonResponse({'new_average_rating': new_average_rating})
 
     return redirect('recipe_detail', recipe_id=recipe.id)
+
 
 
 
