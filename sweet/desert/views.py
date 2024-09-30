@@ -158,17 +158,26 @@ def payment(request):
 
 def like_recipe(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
-
     
+    # Anonim istifadəçilər üçün IP adresini istifadə edə bilərik (alternativ metod)
     user = request.user if request.user.is_authenticated else None
 
-   
-    if user and user in recipe.likes.all():
-        recipe.likes.remove(user)
+    if user:
+        # Login olmuş istifadəçilər üçün bəyənmə funksiyası
+        if user in recipe.likes.all():
+            recipe.likes.remove(user)
+        else:
+            recipe.likes.add(user)
     else:
-        recipe.likes.add(user)
+        # Login olmamış istifadəçilər üçün hər hansı bir başqa işarələmə
+        # Burada session və ya IP ilə işləyə bilərsiniz
+        # Session vasitəsilə hər istifadəçiyə bəyənişi qeyd edək
+        if not request.session.get(f'liked_{recipe_id}', False):
+            # Məsələn, session vasitəsilə hər hansı başqa tədbir
+            request.session[f'liked_{recipe_id}'] = True
 
     return redirect("recipe_detail", recipe_id=recipe.id)
+
 
 
 
@@ -178,17 +187,18 @@ def add_comment(request, recipe_id):
     if request.method == "POST":
         comment_text = request.POST.get("comment")
         if comment_text:
-            # İstifadəçi login olmayıbsa, anonim olaraq əlavə edin
+            # Login olmamış istifadəçilər üçün user None olacaq
             user = request.user if request.user.is_authenticated else None
 
             Comment.objects.create(
                 recipe=recipe,
-                user=user,  # Əgər user None-dursa, anonim olacaq
+                user=user,  # User boş qala bilər
                 text=comment_text
             )
             return redirect("recipe_detail", recipe_id=recipe_id)
 
     return render(request, "add_comment.html", {"recipe": recipe})
+
 
 
 
@@ -205,7 +215,7 @@ def add_rating(request, recipe_id):
 
             Rating.objects.update_or_create(
                 recipe=recipe,
-                user=user,  # Login olmayanlar üçün user None olacaq
+                user=user,  # User boş qala bilər
                 defaults={"rating": score}
             )
 
@@ -213,6 +223,7 @@ def add_rating(request, recipe_id):
             return JsonResponse({'new_average_rating': new_average_rating})
 
     return redirect('recipe_detail', recipe_id=recipe.id)
+
 
 
 

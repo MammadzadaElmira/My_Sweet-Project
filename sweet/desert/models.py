@@ -71,7 +71,7 @@ class Comment(models.Model):
     
 class Rating(models.Model):
     recipe = models.ForeignKey(Recipe, related_name='ratings', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     rating = models.PositiveSmallIntegerField()  
 
     def __str__(self):
