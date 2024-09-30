@@ -166,7 +166,7 @@ def like_recipe(request, recipe_id):
 
 
 
-@login_required
+
 def add_comment(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
 
@@ -184,7 +184,7 @@ def add_comment(request, recipe_id):
 
 
 
-@login_required
+
 def add_rating(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
 
