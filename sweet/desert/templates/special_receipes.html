@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPECİAL RECEİPES</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://images.alphacoders.com/865/865535.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(96, 177, 69, 0.12);
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.7em;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: 700; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    border-bottom: 2px solid #5fec28; 
+    display: inline-block; 
+    padding-bottom: 20px;
+    font-style: italic;
+    margin-top: 40px;
+    margin-left: 120px;
+        }
+
+        .language-info {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 2;
+            font-size: 1.2em;
+        }
+
+        .recipe-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.631);
+            position: relative;
+            z-index: 2;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transform: scale(1.09);
+        }
+
+        .card-img-top {
+            height: 350px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 15px; 
+        }
+
+        .card-title {
+            font-size: 1.9rem; 
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            color: #000000;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #000000;
+            position: relative;
+            z-index: 2;
+        }
+
+        .language-badge {
+            background-color: #ea70f5;
+            color: white;
+            border-radius: 12px;
+            padding: 5px 10px;
+            font-size: 0.9em; 
+            display: inline-block;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .language-badge:hover {
+            background-color: #d560c6;
+        }
+
+        .btn-custom {
+    background-color: #28a745; 
+    color: white; 
+    border-radius: 25px; 
+    padding: 10px 20px; 
+    font-size: 1rem; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.btn-custom:hover {
+    background-color: #64c87a; 
+    transform: translateY(-3px); 
+}
+
+.card-amount {
+    margin-left: 210px;
+    font-size: 25px;
+    
+}
+
+.home-button {
+    position: absolute;
+    left: 10px;
+    top: 40px;
+    background-color: #3de55920;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    z-index: 3; 
+}
+        .home-button:hover {
+            background-color: #60e4463d;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="overlay"></div>
+    <a href="{% url 'home' %}" class="home-button">Home</a>
+    <div class="container">
+        <h1 class="text-center">These recipes are specially made</h1>
+        <div class="language-info"></div>
+
+        <div class="row">
+            {% for recipe in special_recipes %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card recipe-card">
+                    {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.recipe_name }} Şəkili">
+                    {% else %}
+                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Placeholder Şəkil">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.recipe_name }}</h5>
+                        <p class="card-text">To learn the ingredients and instructions required to create this recipe, click for more information.</p>
+                        <a href="{% url 'payment' %}" class="btn btn-custom">View more</a> 
+                        <h5 class="card-amount">{{ recipe.amount }} $</h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+       
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        window.onload = function() {
+            window.scrollTo(0, 0); 
+        };
+    </script>
+</body>
+</html>

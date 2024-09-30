@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yummy - Delicious Sweets Recipes</title>
+    <link rel="icon" href="https://cdn.vectorstock.com/i/500p/35/84/cooking-icon-or-symbol-vector-2713584.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <style>
+       
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fefefe;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        header {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .slider {
+            width: 100%;
+            height: 100%;
+        }
+
+        .slick-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slick-dots li button:before {
+            color: #FF6F61;
+        }
+
+        .slick-prev, .slick-next {
+            color: #FF6F61;
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        header p {
+            font-size: 1.5em;
+            margin: 15px 0;
+            font-weight: 300;
+        }
+
+       
+        .navbar {
+            background-color: #f8f8f8;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-item:hover {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+
+        
+        main {
+            flex: 1;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .section-title {
+            
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: 500; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    border-bottom: 2px solid #ff6f61; 
+    display: inline-block; 
+    padding-bottom: 20px;
+    font-style: italic;
+
+
+        }
+
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-evenly;
+            border-bottom: none;
+            border: none;
+        
+        }
+        .category-description {
+    font-size: 1.2em;
+    color: #8a0808;
+    text-align: center;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+        .card {
+            background-color: #f4f3f307;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            border-bottom: none;
+            border: none;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            transform: scale(1.19);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            color: #000;
+            border-bottom: none;
+            border: none;
+        }
+
+        .card-title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #333;
+            border-bottom: none;
+            overflow: hidden;
+            border-bottom: none;
+            border: none;
+            
+        }
+
+        .card-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            object-fit: cover;
+
+        }
+       
+        .view-details-button {
+            background: linear-gradient(135deg, #ff00bf, #b48216cf);
+            color: #ad1818;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .view-details-button:hover {
+            background: linear-gradient(135deg, #e76f00, #d84315);
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        a {
+    text-decoration: none; 
+    border: none; 
+}
+.category-description {
+    font-size: 1.5em; 
+    color: #000000; 
+    text-align: center; 
+    margin: 10px 0; 
+    line-height: 1.6; 
+    font-style: italic;
+}
+
+       
+        footer {
+            display: flex;
+            background-color: #333;
+            color: #b86464;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            border-top: 1px solid #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        
+.recipe-card {
+    background-color: hsla(0, 0%, 100%, 0);
+    border-radius: 20px; 
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+    width: 250px; 
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.recipe-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); 
+}
+
+.recipe-card-title {
+    font-size: 1.8em; 
+    margin-bottom: 10px;
+    text-align: center;
+    color: #000000; 
+    font-weight: 600; 
+}
+
+.recipe-card-image {
+    width: 100%;
+    height: 220px; 
+    border-radius: 15px;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.recipe-card-detail {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.view-details-button {
+    background: linear-gradient(135deg, #ff6f61, #ff8567); 
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-details-button:hover {
+    background: linear-gradient(135deg, #e76f00, #d84315); 
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.footer-info {
+    display: flex;
+    align-items: center;
+    
+    font-size: 1.2em;
+    color: #333;
+    margin: 0;
+    padding: 5px;
+}
+
+.footer-info i.fa-heart {
+    color: red; 
+
+}
+
+.footer-info i.fa-eye {
+            color: #07859b;
+        }
+
+
+form {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; 
+}
+
+input[type="text"] {
+    width: 400px;
+    padding: 10px;
+    font-size: 19px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #ff6f61; 
+}
+
+button[type="submit"] {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #ff6f61;
+    color: white;
+    border: 1px solid #ff6f61;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff6f61; 
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+p {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+}
+
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px; 
+}
+
+li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+li:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+
+li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #ff6f61;
+    transition: color 0.3s;
+}
+
+li a:hover {
+    color: #ff6f61; 
+}
+
+
+@media (max-width: 600px) {
+    input[type="text"] {
+        width: 100%;
+        border-radius: 4px; 
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    ul {
+        max-width: 100%;
+    }
+}
+.recipe-card i {
+    font-size: 1.1em; 
+    color: lightgray; 
+}
+
+.recipe-card i.filled {
+    color: gold; 
+}
+
+
+
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="slider">
+            <div><img src="https://images3.alphacoders.com/102/1026457.jpg"></div>
+            <div><img src="https://images5.alphacoders.com/109/thumb-1920-1090307.jpg"></div>
+            <div><img src="https://images6.alphacoders.com/398/398992.jpg"></div>
+            <div><img src="https://images6.alphacoders.com/324/324556.jpg"></div>
+            <div><img src="https://images.pexels.com/photos/10720385/pexels-photo-10720385.jpeg?auto=compress&cs=tinysrgb&w=1200"></div>
+        </div>
+        <div class="header-content">
+            <h1>It is even better than an expensive cookery book</h1>
+            <p>Learn how to make your favorite restaurant's dishes</p>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-item active">Home</a>
+            <a href="about_us/" class="nav-item">About Us</a>
+            <a href="log-in/" class="nav-item">Log In</a>
+            <a href="add_recipe/" class="nav-item">Submit Recipe</a>
+            <a href="contact_us/" class="nav-item">Contact Us</a>
+            <a href="special_receipe/" class="nav-item">Special Recipes</a>
+        </div>
+    </nav>
+    
+<form action="{% url 'home' %}" method="get">
+    <input type="text" name="q" placeholder="Search recipes..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+
+{% if query %}
+    <p>Search Results for "{{ query }}":</p>
+    {% if recipes %}
+        <ul>
+        {% for recipe in recipes %}
+            <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recipes found matching your search query.</p>
+    {% endif %}
+{% else %}
+    
+{% endif %}
+
+    <main>
+        <h2 class="section-title">Categories</h2>
+        <div class="container">
+            {% for catg in categories %}
+            <div class="card">
+                <a href="{% url 'category_home' catg.id %}">
+                <img class="card-image" src="{{ catg.thumbnail_photo_url }}" alt="{{ catg.title }}">
+                    <div class="card-title">{{ catg.title }}</div>
+                <p class="category-description">{{ catg.description }}</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="section-title">Recently Added Recipes</h2>
+        <div class="container">
+            
+            {% for recipe in recipes %}
+            <a href="recipe/{{ recipe.id }}/" class="recipe-link">
+                <div class="recipe-card">
+                    <img class="recipe-card-image" src="{{ recipe.get_thumbnail_photo_url }}" alt="{{ recipe.title }}">
+                    <div class="recipe-card-title">{{ recipe.name }}</div>
+                    <p class="footer-info">
+                        <i class="fa fa-heart"></i> {{ recipe.likes.count }} like
+                    </p>
+                    <p class="footer-info"><i class="fa fa-eye"></i> {{ recipe.views_count }}</p>
+                    <p>
+                        <strong>
+                            {% for i in "12345"|make_list %}
+                                <i class="fa fa-star {% if i <= recipe.average_rating|floatformat:0 %}filled{% endif %}"></i>
+                            {% endfor %}
+                        </strong>
+                    </p>
+                    <div class="recipe-card-detail">
+                        <button class="view-details-button">
+                            <i class="fa fa-arrow-right"></i> Go to Recipe
+                        </button>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+       
+        </div>
+        
+    </main>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear',
+                autoplay: true,
+                autoplaySpeed: 3000
+            });
+        });
+    </script>
+    
+</body>
+</html>

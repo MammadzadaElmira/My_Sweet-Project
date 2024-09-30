@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://cdn.prod.website-files.com/6261b09eab2dfc5cf277fc55/63595e8b3710a4084836489d_What%20is%20a%20hosted%20payments%20page.png') no-repeat center center fixed; /* Background image */
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(182, 189, 193, 0.408); 
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #040000;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .btn {
+            background-color: #2894a7;
+            color: rgb(0, 0, 0);
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #3cb6e2;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .payment-methods i {
+            font-size: 50px; 
+            margin: 0 10px;
+            transition: transform 0.3s;
+        }
+
+        .fa-cc-paypal {
+            color: #003087; 
+        }
+
+        .fa-cc-visa {
+            color: #1A1F71; 
+        }
+
+        .fa-cc-mastercard {
+            font-size: 100px; 
+            background: linear-gradient(90deg, #EB001B 50%, #F79E1B 50%); 
+            -webkit-background-clip: text;
+            -moz-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            color: transparent; 
+        }
+
+        .payment-methods i:hover {
+            transform: scale(1.1);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #000000;
+        }
+
+        .mastercard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mastercard-label {
+            font-size: 16px; 
+            margin-bottom: 5px; 
+            color: #000000; 
+        }
+        .home-button {
+            position: absolute;
+            left: 20px; 
+            top: 20px; 
+            background-color: #e5a53d00;
+            color: rgb(24, 200, 235);
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #e490460b;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'home' %}" class="home-button">Home</a>
+    <div class="container">
+        <h1>Payment System</h1>
+        <form id="payment-form" action="{% url 'success_payment' %}" method="post">
+            {% csrf_token %}
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required aria-required="true">
+
+            <label for="email">Your Email Address:</label>
+            <input type="email" id="email" name="email" required aria-required="true">
+
+            <label for="card-number">Credit Card Number:</label>
+            <input type="tel" id="card-number" name="card-number" pattern="\d{16}" placeholder="XXXX-XXXX-XXXX-XXXX" required aria-required="true">
+
+            <label for="expiry">Expiration Date (MM/YY):</label>
+            <input type="text" id="expiry" name="expiry" pattern="(0[1-9]|1[0-2])\/\d{2}" placeholder="MM/YY" required aria-required="true">
+
+            <label for="cvc">CVC:</label>
+            <input type="number" id="cvc" name="cvc" pattern="\d{3}" placeholder="XXX" required aria-required="true">
+
+           <button type="submit" class="btn">Complete Payment</button>
+        </form>
+
+        <div class="payment-methods">
+            <i class="fab fa-cc-paypal" alt="PayPal"></i>
+            <i class="fab fa-cc-visa" alt="Visa"></i>
+            <div class="mastercard-container">
+                <i class="fab fa-cc-mastercard" alt="MasterCard"></i>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 Payment System</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function (event) {
+            let cardNumber = document.getElementById('card-number').value;
+            let expiry = document.getElementById('expiry').value;
+            let cvc = document.getElementById('cvc').value;
+
+            if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+                alert('Please enter a valid credit card number.');
+                event.preventDefault();
+            }
+
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
+                alert('Please enter a valid expiration date (MM/YY).');
+                event.preventDefault();
+            }
+
+            if (cvc.length !== 3 || !/^\d+$/.test(cvc)) {
+                alert('Please enter a valid CVC code.');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

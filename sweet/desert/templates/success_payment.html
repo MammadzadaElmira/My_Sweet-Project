@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Sent</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('https://c4.wallpaperflare.com/wallpaper/681/469/187/cookies-4k-computer-desktop-backgrounds-wallpaper-preview.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            backdrop-filter: blur(6px);
+            color: #000000;
+        }
+        .container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.259);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.3em;
+            color: #000000;
+            line-height: 1.7;
+            font-style: italic;
+            
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 1.3em;
+            color: #fff;
+            background-color: #0e0901;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #a5094d;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Recipe Sent!</h1>
+        <p>The recipe has been successfully sent to your email. Check your inbox, and we hope you enjoy preparing your meal!</p>
+        <a href="{% url 'home' %}" class="button">Go to Homepage</a>
+    </div>
+</body>
+</html>
