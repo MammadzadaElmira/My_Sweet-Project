@@ -156,25 +156,25 @@ def payment(request):
     return render(request, "payment.html")
 
 
+from django.contrib.auth.models import AnonymousUser
+
 def like_recipe(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     
-    # Anonim istifadəçilər üçün IP adresini istifadə edə bilərik (alternativ metod)
-    user = request.user if request.user.is_authenticated else None
-
-    if user:
-        # Login olmuş istifadəçilər üçün bəyənmə funksiyası
-        if user in recipe.likes.all():
-            recipe.likes.remove(user)
-        else:
-            recipe.likes.add(user)
-    else:
-        # Login olmamış istifadəçilər üçün hər hansı bir başqa işarələmə
-        # Burada session və ya IP ilə işləyə bilərsiniz
-        # Session vasitəsilə hər istifadəçiyə bəyənişi qeyd edək
+    # Yoxlayırıq ki, istifadəçi login olub ya yox
+    if isinstance(request.user, AnonymousUser):
+        # Anonim istifadəçi üçün sessiya vasitəsilə bəyənişi idarə edək
         if not request.session.get(f'liked_{recipe_id}', False):
-            # Məsələn, session vasitəsilə hər hansı başqa tədbir
+            # İlk dəfə bəyəndikdə sessiyada işarələyirik
             request.session[f'liked_{recipe_id}'] = True
+            recipe.views_count += 1  # Və ya bəyənişi başqa üsulla idarə edə bilərsiniz
+            recipe.save()
+    else:
+        # Login olmuş istifadəçilər üçün bəyənişi idarə edirik
+        if request.user in recipe.likes.all():
+            recipe.likes.remove(request.user)
+        else:
+            recipe.likes.add(request.user)
 
     return redirect("recipe_detail", recipe_id=recipe.id)
 
