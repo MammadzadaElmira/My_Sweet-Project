@@ -10,6 +10,8 @@ from django.conf import settings
 from django.db.models import Q  
 from django.http import JsonResponse
 from django.db.models import Avg 
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 
 
@@ -156,40 +158,15 @@ def payment(request):
     return render(request, "payment.html")
 
 
-"""def like_recipe(request, recipe_id):
-    recipe = Recipe.objects.get(id=recipe_id)
-    if request.user in recipe.likes.all():
-        recipe.likes.remove(request.user)
-    else:
-        recipe.likes.add(request.user)
-    return redirect("recipe_detail", recipe_id=recipe.id)"""
-
-
-
-from django.shortcuts import redirect
-from django.contrib import messages
-
-from django.shortcuts import redirect
-from django.contrib import messages
-
-from django.shortcuts import redirect
-from django.contrib import messages
-
-from django.contrib import messages
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
 
 def like_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
 
-    # Kullanıcının IP adresini al
+   
     user_ip = request.META.get('REMOTE_ADDR')
 
     if user_ip:
-        # IP adresine göre beğeni işlemi
+       
         like, created = Like.objects.get_or_create(recipe=recipe, ip_address=user_ip)
 
         if created:
