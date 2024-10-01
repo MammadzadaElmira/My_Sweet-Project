@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from.models import Category,Recipe, RecipePhoto, Comment, Rating, SpecialRecipe
+from.models import *
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django import forms
@@ -156,14 +156,51 @@ def payment(request):
     return render(request, "payment.html")
 
 
-def like_recipe(request, recipe_id):
+"""def like_recipe(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     if request.user in recipe.likes.all():
         recipe.likes.remove(request.user)
     else:
         recipe.likes.add(request.user)
-    return redirect("recipe_detail", recipe_id=recipe.id)
+    return redirect("recipe_detail", recipe_id=recipe.id)"""
 
+
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+
+def like_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+
+    # Kullanıcının IP adresini al
+    user_ip = request.META.get('REMOTE_ADDR')
+
+    if user_ip:
+        # IP adresine göre beğeni işlemi
+        like, created = Like.objects.get_or_create(recipe=recipe, ip_address=user_ip)
+
+        if created:
+            messages.success(request, 'You liked the recipe.')
+        else:
+            like.delete()
+            messages.success(request, 'Like removed.')
+    else:
+        messages.warning(request, 'Unable to identify your IP address.')
+
+    return redirect("recipe_detail", recipe_id=recipe.id)
 
 
 

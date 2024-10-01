@@ -51,6 +51,11 @@ class Recipe(models.Model):
     
 
 
+class Like(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField()
+
+
 class Comment(models.Model):
     LANGUAGES = (
         ("AZ", "AZ"),

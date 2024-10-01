@@ -8,4 +8,5 @@ admin.site.register(CategoryPhoto)
 admin.site.register(RecipePhoto)
 admin.site.register(Rating)
 admin.site.register(SpecialRecipe)
+admin.site.register(Like)
 

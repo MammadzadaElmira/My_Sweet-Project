@@ -290,14 +290,15 @@
 
 <div id="rating-message"></div> 
 
-        <form id="like-form" action="{% url 'like_recipe' recipe.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" id="like-button" class="like-button">
-                <i class="fa fa-heart {% if user in recipe.likes.all %}liked{% endif %}"></i>
-            </button>
-            <span>{{ recipe.likes.count }} like</span>
-            <p class="footer-info"></p>       
-        </form>
+<form id="like-form" action="{% url 'like_recipe' recipe.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" id="like-button" class="like-button">
+        <i class="fa fa-heart {% if user.is_authenticated and user in recipe.likes.all %}liked{% endif %}"></i>
+    </button>
+    <span>{{ recipe.likes.count }} like</span>
+    <p class="footer-info"></p>       
+</form>
+
         <h2>Comments</h2>
         <div class="comments">
             {% for comment in recipe.comments.all %}
@@ -380,5 +381,34 @@
         });
     });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#like-form').submit(function(e) {
+            e.preventDefault(); // Formun göndərilməsini dayandır
+            
+            var form = $(this);
+            
+            $.post(form.attr('action'), form.serialize(), function(response) {
+                // Bəyənmə sayını yeniləyin
+                var likeCount = parseInt(form.find('span').text()) || 0;
+                var likedIcon = form.find('i');
+    
+                if (likedIcon.hasClass('liked')) {
+                    likeCount -= 1;  // Bəyənməni sil
+                    likedIcon.removeClass('liked');
+                } else {
+                    likeCount += 1;  // Bəyənmə əlavə et
+                    likedIcon.addClass('liked');
+                }
+    
+                form.find('span').text(likeCount + ' like');
+            }).fail(function() {
+                alert("Bəyənmə əməliyyatı baş vermədi. Zəhmət olmasa yenidən cəhd edin.");
+            });
+        });
+    });
+    </script>
+    
 </body>
 </html>
