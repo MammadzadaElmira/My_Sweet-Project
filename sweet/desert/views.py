@@ -182,7 +182,6 @@ def like_recipe(request, recipe_id):
 
 
 
-
 def add_comment(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
 

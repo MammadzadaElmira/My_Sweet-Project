@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-3u$c2h56kfnku8lbyp_yhhybs3yvuv6t8%5!h$o3d2=e3fhktq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['167.99.90.141']
 
 
 # Application definition
@@ -148,6 +148,6 @@ CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_RESULT_BACKEND = 'django-db'
-#CELERY_BROKER_URL = "redis://localhost:6379"
-#CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
