@@ -159,23 +159,24 @@ def payment(request):
 
 
 
-def like_recipe(request, recipe_id):
-    recipe = get_object_or_404(Recipe, id=recipe_id)
+def like_recipe(request, recipe_id): 
+    recipe = get_object_or_404(Recipe, id=recipe_id) 
+    
+    user_ip = request.META.get('REMOTE_ADDR') 
 
-   
-    user_ip = request.META.get('REMOTE_ADDR')
 
-    if user_ip:
-       
-        like, created = Like.objects.get_or_create(recipe=recipe, ip_address=user_ip)
+    if request.user.is_authenticated:
 
-        if created:
-            messages.success(request, 'You liked the recipe.')
-        else:
-            like.delete()
-            messages.success(request, 'Like removed.')
+        like, created = Like.objects.get_or_create(recipe=recipe, user=request.user)
+        
+        if created: 
+            messages.success(request, 'You liked the recipe.') 
+        else: 
+            like.delete() 
+            messages.success(request, 'Like removed.') 
     else:
-        messages.warning(request, 'Unable to identify your IP address.')
+
+        messages.warning(request, 'You must be logged in to like a recipe.')
 
     return redirect("recipe_detail", recipe_id=recipe.id)
 
