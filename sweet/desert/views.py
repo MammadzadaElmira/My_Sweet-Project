@@ -182,18 +182,23 @@ def like_recipe(request, recipe_id):
 
 
 
-def add_comment(request, recipe_id):
-    recipe = Recipe.objects.get(id=recipe_id)
 
-    if request.method == "POST":
-        comment_text = request.POST.get("comment")
+
+def add_comment(request, recipe_id): 
+    recipe = get_object_or_404(Recipe, id=recipe_id)  
+
+    if request.method == "POST": 
+        comment_text = request.POST.get("comment") 
+        username = request.POST.get("username")  
         if comment_text:
-            Comment.objects.create(
-                recipe=recipe,
-                user=request.user, 
-                text=comment_text  
-            )
-            return redirect("recipe_detail", recipe_id=recipe_id)
+
+            Comment.objects.create( 
+                recipe=recipe, 
+                user=request.user if request.user.is_authenticated else username,  
+                text=comment_text   
+            ) 
+            messages.success(request, "Yorum başarıyla eklendi.")  
+            return redirect("recipe_detail", recipe_id=recipe_id) 
 
     return render(request, "add_comment.html", {"recipe": recipe})
 
